@@ -21,16 +21,23 @@ generate_backup_files () {
 
 	TAR_NAME=$SITENAME"_"$DATE_DAILY".tar.gz"
 
-	# Dump MySQL database
-	e_arrow "Dumping database "$2
-	mysqldump -h 127.0.0.1 -u $3 -p$4 $2 > $DBFILE 2>&1
+	# If the site has a database
+	if [ $# -eq 4 ]; then
+		# Dump MySQL database
+		e_arrow "Dumping database "$2
+		mysqldump -h 127.0.0.1 -u $3 -p$4 $2 > $DBFILE 2>&1
 
-	# Compress databases and files
-	e_arrow "Generating tarball for "$SITENAME
-	tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $DBFILE $1 2>&1
+		# Compress databases and files
+		e_arrow "Generating tarball for "$SITENAME
+		tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $DBFILE $1 2>&1
 
-	# Rm temp file
-	rm $DBFILE;
+		# Rm DB dump
+		rm $DBFILE;
+	else;
+		# Compress files
+		e_arrow "Generating tarball for "$SITENAME
+		tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $1 2>&1
+	fi;
 
 	# Check if tarball has been generated. Notify if failed.
 	if [ ! -f $INCOMING_FOLDER/$TAR_NAME ]; then
