@@ -27,7 +27,7 @@ generate_backup_files () {
 
 	# Compress databases and files
 	e_arrow "Generating tarball for "$SITENAME
-	tar -czf $INCOMING_FOLDER/$TAR_NAME $DBFILE $1 2>&1
+	tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $DBFILE $1 2>&1
 
 	# Rm temp file
 	rm $DBFILE;
