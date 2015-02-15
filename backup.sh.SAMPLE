@@ -1,0 +1,25 @@
+#!/bin/bash
+
+source bkp-srv-extended.sh
+
+## Paths
+INCOMING_FOLDER="/path/to/temp/folder"
+BACKUP_FOLDER=$HOME"/path/to/final/backups"
+
+## Pushover.net config
+P_PUSHOVERURL="https://api.pushover.net/1/messages.json"
+P_API_KEY="YOUR-API-KEY"
+P_USER_KEY="YOUR-USER-KEY"
+P_DEVICE="optional-device-name"
+
+## Add as manu site as you want
+#backup "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
+backup "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
+backup "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
+backup "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
+
+e_note "Clean old backups";
+clean_local_backup
+
+e_note "Send notification";
+notify "Daily backup report" "Daily terminated. "$SUCCEED" sites were backup correctly and "$FAILED" have errors"
