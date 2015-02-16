@@ -45,7 +45,7 @@ generate_backup_files () {
 	fi
 
 	# On the first day of the month
-	if [[ "$2" == "dayly" ]] ; then
+	if [[ "$2" == "daily" ]] ; then
 		DEST_FOLDER=$BACKUP_FOLDER_DAILY"/"$DATE_DAILY
 	elif [[ "$2" == "weekly" ]]; then
 		DEST_FOLDER=$BACKUP_FOLDER_WEEKLY"/"$DATE_DAILY
