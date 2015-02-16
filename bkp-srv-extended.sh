@@ -48,11 +48,11 @@ generate_backup_files () {
 	fi
 
 	# On the first day of the month
-	if [[ "$5" == "dayly" ]] ; then
+	if [[ "$2" == "dayly" ]] ; then
 		DEST_FOLDER=$BACKUP_FOLDER_DAILY"/"$DATE_DAILY
-	elif [[ "$5" == "weekly" ]]; then
+	elif [[ "$2" == "weekly" ]]; then
 		DEST_FOLDER=$BACKUP_FOLDER_WEEKLY"/"$DATE_DAILY
-	elif [[ "$5" == "monthly" ]]; then
+	elif [[ "$2" == "monthly" ]]; then
 		DEST_FOLDER=$BACKUP_FOLDER_MONTHLY"/"$DATE_DAILY
 	fi
 
@@ -90,13 +90,14 @@ clean_local_backup () {
 
 backup () {
 
-	if [[ "$1" == "daily" ]]; then
+	if [[ "$2" == "daily" ]]; then
 		e_arrow $2
-	elif [[ "$1" == "weekly" && "$WEEK_DAY" -eq 5 ]]; then
+	elif [[ "$2" == "weekly" && "$WEEK_DAY" -eq 5 ]]; then
 		e_arrow $2
-	elif [[ "$1" == "monthly" && "$MONTH_DAY" -eq 16 ]]; then
+	elif [[ "$2" == "monthly" && "$MONTH_DAY" -eq 1 ]]; then
 		e_arrow $2
 	else
+		e_arrow "No backup required"
 		return 0;
 	fi;
 
