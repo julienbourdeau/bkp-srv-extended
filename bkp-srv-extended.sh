@@ -16,10 +16,7 @@ WEEK_DAY=`date +"%u"`
 
 generate_backup_files () {
 	SITENAME=$(basename $1)
-	e_header $SITENAME;
-
 	DBFILE=$INCOMING_FOLDER/$3.sql
-
 	TAR_NAME=$SITENAME"_"$DATE_DAILY".tar.gz"
 
 	# If the site has a database
@@ -91,13 +88,13 @@ clean_local_backup () {
 backup () {
 
 	if [[ "$2" == "daily" ]]; then
-		e_arrow $2
+		e_header $(basename $1);
 	elif [[ "$2" == "weekly" && "$WEEK_DAY" -eq 5 ]]; then
-		e_arrow $2
+		e_header $(basename $1);
 	elif [[ "$2" == "monthly" && "$MONTH_DAY" -eq 1 ]]; then
-		e_arrow $2
+		e_header $(basename $1);
 	else
-		e_arrow "No backup required"
+		e_note "No backup required for "$(basename $1)
 		return 0;
 	fi;
 
