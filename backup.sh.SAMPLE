@@ -3,8 +3,12 @@
 source bkp-srv-extended.sh
 
 ## Paths
+## Provide all paths with no trailing slash
 INCOMING_FOLDER="/path/to/temp/folder"
-BACKUP_FOLDER=$HOME"/path/to/final/backups"
+BACKUP_FOLDER="/path/to/final/backups"
+BACKUP_FOLDER_DAILY=$BACKUP_FOLDER"/backup.daily"
+BACKUP_FOLDER_WEEKLY=$BACKUP_FOLDER"/backup.weekly"
+BACKUP_FOLDER_MONTHLY=$BACKUP_FOLDER"/backup.monthly"
 
 ## Pushover.net config
 P_PUSHOVERURL="https://api.pushover.net/1/messages.json"
@@ -13,10 +17,10 @@ P_USER_KEY="YOUR-USER-KEY"
 P_DEVICE="optional-device-name"
 
 ## Add as manu site as you want
-#backup "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
-backup "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
-backup "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
-backup "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
+# FREQUENCY can be 'daily' 'weekly' 'monthly'
+#backup "/path/to/site/to/be/backedup" "FREQUENCY" "DB-NAME" "DB-USER" "DB-PASSWORD"
+backup "/path/to/site/to/be/backedup" "FREQUENCY" "DB-NAME" "DB-USER" "DB-PASSWORD"
+backup "/path/to/site/to/be/backedup" "FREQUENCY" "DB-NAME" "DB-USER" "DB-PASSWORD"
 
 e_note "Clean old backups";
 clean_local_backup

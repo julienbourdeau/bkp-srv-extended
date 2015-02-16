@@ -8,24 +8,25 @@ source helpers.sh
 SUCCEED=0
 FAILED=0
 
+DATE_DAILY=`date +"%Y-%m-%d"`
+MONTH_DAY=`date +"%d"`
+WEEK_DAY=`date +"%u"`
+
 # Subfunctions
 
 generate_backup_files () {
 	SITENAME=$(basename $1)
 	e_header $SITENAME;
 
-	DBFILE=$INCOMING_FOLDER/$2.sql
-	DATE_DAILY=`date +"%Y-%m-%d"`
-	MONTH_DAY=`date +"%d"`
-	WEEK_DAY=`date +"%u"`
+	DBFILE=$INCOMING_FOLDER/$3.sql
 
 	TAR_NAME=$SITENAME"_"$DATE_DAILY".tar.gz"
 
 	# If the site has a database
 	if [ $# -eq 4 ]; then
 		# Dump MySQL database
-		e_arrow "Dumping database "$2
-		mysqldump -h 127.0.0.1 -u $3 -p$4 $2 > $DBFILE 2>&1
+		e_arrow "Dumping database "$3
+		mysqldump -h 127.0.0.1 -u $4 -p$5 $3 > $DBFILE 2>&1
 
 		# Compress databases and files
 		e_arrow "Generating tarball for "$SITENAME
@@ -47,16 +48,12 @@ generate_backup_files () {
 	fi
 
 	# On the first day of the month
-	if [ "$MONTH_DAY" -eq 1 ] ; then
-		DEST_FOLDER=$BACKUP_FOLDER"/backup.monthly/"$DATE_DAILY
-	else
-		# On fridays
-		if [ "$WEEK_DAY" -eq 5 ] ; then
-			DEST_FOLDER=$BACKUP_FOLDER"/backup.weekly/"$DATE_DAILY
-		# Any other day
-		else
-			DEST_FOLDER=$BACKUP_FOLDER"/backup.daily/"$DATE_DAILY
-		fi
+	if [[ "$5" == "dayly" ]] ; then
+		DEST_FOLDER=$BACKUP_FOLDER_DAILY"/"$DATE_DAILY
+	elif [[ "$5" == "weekly" ]]; then
+		DEST_FOLDER=$BACKUP_FOLDER_WEEKLY"/"$DATE_DAILY
+	elif [[ "$5" == "monthly" ]]; then
+		DEST_FOLDER=$BACKUP_FOLDER_MONTHLY"/"$DATE_DAILY
 	fi
 
 	# if the folder doesnt exist yet
@@ -92,7 +89,18 @@ clean_local_backup () {
 # Main Function
 
 backup () {
-	if generate_backup_files $1 $2 $3 $4; then
+
+	if [[ "$1" == "daily" ]]; then
+		e_arrow $2
+	elif [[ "$1" == "weekly" && "$WEEK_DAY" -eq 5 ]]; then
+		e_arrow $2
+	elif [[ "$1" == "monthly" && "$MONTH_DAY" -eq 16 ]]; then
+		e_arrow $2
+	else
+		return 0;
+	fi;
+
+	if generate_backup_files $1 $2 $3 $4 $5; then
 		SUCCEED=$[SUCCEED + 1];
 		e_success "Success"
 	else
