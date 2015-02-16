@@ -34,7 +34,7 @@ generate_backup_files () {
 
 		# Rm DB dump
 		rm $DBFILE;
-	else;
+	else
 		# Compress files
 		e_arrow "Generating tarball for "$SITENAME
 		tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $1 2>&1
