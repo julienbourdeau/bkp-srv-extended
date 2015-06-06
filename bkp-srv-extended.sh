@@ -15,7 +15,7 @@ WEEK_DAY=`date +"%u"`
 # Subfunctions
 
 generate_backup_files () {
-	SITENAME=$(basename $1)
+	SITENAME=$(basename $2)
 	DBFILE=$INCOMING_FOLDER/$3.sql
 	TAR_NAME=$SITENAME"_"$DATE_DAILY".tar.gz"
 
@@ -27,14 +27,14 @@ generate_backup_files () {
 
 		# Compress databases and files
 		e_arrow "Generating tarball for "$SITENAME
-		tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $DBFILE $1 2>&1
+		tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $DBFILE $2 2>&1
 
 		# Rm DB dump
 		rm $DBFILE;
 	else
 		# Compress files
 		e_arrow "Generating tarball for "$SITENAME
-		tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $1 2>&1
+		tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $2 2>&1
 	fi;
 
 	# Check if tarball has been generated. Notify if failed.
@@ -45,11 +45,11 @@ generate_backup_files () {
 	fi
 
 	# On the first day of the month
-	if [[ "$2" == "daily" ]] ; then
+	if [[ "$1" == "daily" ]] ; then
 		DEST_FOLDER=$BACKUP_FOLDER_DAILY"/"$DATE_DAILY
-	elif [[ "$2" == "weekly" ]]; then
+	elif [[ "$1" == "weekly" ]]; then
 		DEST_FOLDER=$BACKUP_FOLDER_WEEKLY"/"$DATE_DAILY
-	elif [[ "$2" == "monthly" ]]; then
+	elif [[ "$1" == "monthly" ]]; then
 		DEST_FOLDER=$BACKUP_FOLDER_MONTHLY"/"$DATE_DAILY
 	fi
 
@@ -87,14 +87,14 @@ clean_local_backup () {
 
 backup () {
 
-	if [[ "$2" == "daily" ]]; then
-		e_header $(basename $1);
-	elif [[ "$2" == "weekly" && "$WEEK_DAY" -eq 5 ]]; then
-		e_header $(basename $1);
-	elif [[ "$2" == "monthly" && "$MONTH_DAY" -eq 1 ]]; then
-		e_header $(basename $1);
+	if [[ "$1" == "daily" ]]; then
+		e_header $(basename $2);
+	elif [[ "$1" == "weekly" && "$WEEK_DAY" -eq 5 ]]; then
+		e_header $(basename $2);
+	elif [[ "$1" == "monthly" && "$MONTH_DAY" -eq 1 ]]; then
+		e_header $(basename $2);
 	else
-		e_note "No backup required for "$(basename $1)
+		e_note "No backup required for "$(basename $2)
 		return 0;
 	fi;
 
