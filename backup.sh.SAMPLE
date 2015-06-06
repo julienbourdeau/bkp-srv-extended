@@ -1,5 +1,18 @@
 #!/bin/bash
 
+for i in "$@"
+do
+case $i in
+    --all)
+    ALL=true
+    shift # past argument with no value
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+done
+
 source bkp-srv-extended.sh
 
 ## Paths
@@ -16,11 +29,21 @@ P_API_KEY="YOUR-API-KEY"
 P_USER_KEY="YOUR-USER-KEY"
 P_DEVICE="optional-device-name"
 
+if [[ $ALL == true ]]; then
+  DAILY="daily"
+  WEEKLY="daily"
+  MONTHLY="daily"
+else
+  DAILY="daily"
+  WEEKLY="weekly"
+  MONTHLY="monthly"
+fi;
+
 ## Add as manu site as you want
-# FREQUENCY can be 'daily' 'weekly' 'monthly'
-#backup "/path/to/site/to/be/backedup" "FREQUENCY" "DB-NAME" "DB-USER" "DB-PASSWORD"
-backup "/path/to/site/to/be/backedup" "FREQUENCY" "DB-NAME" "DB-USER" "DB-PASSWORD"
-backup "/path/to/site/to/be/backedup" "FREQUENCY" "DB-NAME" "DB-USER" "DB-PASSWORD"
+# FREQUENCY can be '$DAILY' '$WEEKLY' '$MONTHLY'
+#backup "FREQUENCY" "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
+backup "$DAILY" "/path/to/site/to/be/backedup" "DB-NAME" "DB-USER" "DB-PASSWORD"
+backup "$MONTHLY" "/path/to/site/to/be/backedup"
 
 e_note "Clean old backups";
 clean_local_backup
