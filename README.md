@@ -1,7 +1,7 @@
 # bkp-srv-extended
 Bash script for server backup with logs, FTP and Pushover support
 
-![Screenshot script execution](http://cdn.sigerr.org/bkp-srv-extended/bash-script-backup.png)
+![Screenshot script execution](/img1.png?raw=true)
 
 ### TODO
 * ~~Add frequency parameter~~
