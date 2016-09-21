@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Dependencies
-source helpers.sh
+source $(dirname $0)/helpers.sh
 
 # Global vars
 
@@ -20,7 +20,7 @@ generate_backup_files () {
 	TAR_NAME=$SITENAME"_"$DATE_DAILY".tar.gz"
 
 	# If the site has a database
-	if [ $# -eq 4 ]; then
+	if [ $# -eq 5 ]; then
 		# Dump MySQL database
 		e_arrow "Dumping database "$3
 		mysqldump -h 127.0.0.1 -u $4 -p$5 $3 > $DBFILE 2>&1
@@ -30,7 +30,7 @@ generate_backup_files () {
 		tar -czf $INCOMING_FOLDER/$TAR_NAME --exclude-vcs $DBFILE $2 2>&1
 
 		# Rm DB dump
-		rm $DBFILE;
+#		rm $DBFILE;
 	else
 		# Compress files
 		e_arrow "Generating tarball for "$SITENAME

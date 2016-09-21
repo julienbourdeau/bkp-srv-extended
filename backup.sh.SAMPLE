@@ -13,7 +13,7 @@ case $i in
 esac
 done
 
-source bkp-srv-extended.sh
+source $(dirname $0)/bkp-srv-extended.sh
 
 ## Paths
 ## Provide all paths with no trailing slash
